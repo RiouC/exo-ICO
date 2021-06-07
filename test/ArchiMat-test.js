@@ -5,7 +5,7 @@ describe('ArchiMat', async function () {
   let dev, owner, alice, bob, charlie, ArchiMat, archimat;
   const NAME = 'ArchiMat';
   const SYMBOL = 'AMAT';
-  const INIT_SUPPLY = ethers.utils.parseEther('10000000000');
+  const INIT_SUPPLY = ethers.utils.parseEther('1');
 
   beforeEach(async function () {
     [dev, owner] = await ethers.getSigners();

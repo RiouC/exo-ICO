@@ -1,19 +1,27 @@
 * Exercice: ICO
 
-** TODO Créer un ERC20 en utilisant les librairies d'OpenZepplin.
+** DONE Créer un ERC20 en utilisant les librairies d'OpenZepplin.
 
-** TODO Assigner la total supply à un utilisateur qui possédera tous les tokens, c'est l'owner.
+** DONE Assigner la total supply à un utilisateur qui possédera tous les tokens, c'est l'owner.
 
-** TODO Créer un smart contract ICO qui permettra à des utilisateurs d'acheter les tokens de l'owner.
-*** TODO 1 Token (1 x 10^18) pourra être obtenu pour 1 gwei.
-*** TODO Les utilisateurs auront 2 possibilités pour acheter ces tokens:
-**** TODO Envoyer directement les ethers qui seront réceptionnés par une fonction receive (déjà vu en cours)
-**** TODO Utiliser une fonction buyTokens() qui sera payable afin de supporter l'envoi d'ethers.
-*** TODO Le smart contract devra posséder un owner, vous pouvez utiliser Ownable.sol que nous avons déjà vu en cours, ou encore mieux utiliser Ownable.sol. Lire https://docs.openzeppelin.com/contracts/4.x/api/access#Ownable pour plus d'information.
-*** TODO L'ICO devra durer 2 semaines à partir du déploiement du smart contract. Après 2 semaines la vente de token sera clôturée.
-*** TODO L'owner pourra withdraw toute la balance du smart contract ICO lorsque l'ICO sera terminée, c'est à dire 2 semaines après le déploiement.
-*** TODO Ajouter des getters utilitaires pour obtenir le montant des wei gagnés, le nombre de tokens vendus, le prix en wei d'un token etc...
-*** TODO Ajouter des events.
+** TODO [6/7] Créer un smart contract ICO qui permettra à des utilisateurs d'acheter les tokens de l'owner.
+  - [X] 1 Token (1 x 10^18) pourra être obtenu pour 1 gwei.
+  - [X] Les utilisateurs auront 2 possibilités pour acheter ces tokens:
+    - [X] Envoyer directement les ethers qui seront réceptionnés par une fonction receive (déjà vu en cours)
+    - [X] Utiliser une fonction buyTokens() qui sera payable afin de supporter l'envoi d'ethers.
+    - [X] Fonction private pour acheter les tokens (_buyTokens)
+  - [X] Le smart contract devra posséder un owner, vous pouvez utiliser Ownable.sol que nous avons déjà vu en cours, ou encore mieux utiliser Ownable.sol. Lire https://docs.openzeppelin.com/contracts/4.x/api/access#Ownable pour plus d'information.
+  - [X] L'ICO devra durer 2 semaines à partir du déploiement du smart contract. Après 2 semaines la vente de token sera clôturée.
+  - [X] L'owner pourra withdraw toute la balance du smart contract ICO lorsque l'ICO sera terminée, c'est à dire 2 semaines après le déploiement.
+  - [X] Ajouter des getters utilitaires
+    - [X] le montant des wei gagnés (icoBalance)
+    - [X] le nombre de tokens vendus (supplysold)
+    - [X] le prix en wei d'un token (exchrate)
+  - [ ] Ajouter des events.
+
+** TODO Calc
 
 ** TODO Vous devrez fournir les tests unitaires qui justifieront du bon fonctionnement de votre ICO. Attention à bien penser à approve le smart contract de l'ICO en tant qu'owner des tokens afin d'autoriser le smart contract de l'ICO à transférer les tokens aux acheteurs dans vos tests.
+
+** TODO NatSpec
 
