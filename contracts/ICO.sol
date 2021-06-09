@@ -9,7 +9,9 @@ import "./ArchiMat.sol";
 
 /**
  * @title ICO
+ * @author Christophe
  * @notice Implements a basic ICO for the ArchiMat token
+ * The sale lasts 2 weeks after the deployement.
  */
 contract ICO is Ownable {
     using Address for address payable;
@@ -17,12 +19,17 @@ contract ICO is Ownable {
     // storage
     ArchiMat private _token;
     uint256 private constant DECIMALS = 18;
-    uint256 private constant EXCHRATE = 1000;
+    uint256 private constant EXCHRATE = 1000000000;
     uint256 private immutable INITIAL_SUPPLY;
     uint256 private _supply;
     mapping(address => uint256) private _tokenBalances;
     uint256 private _epochIcoStart;
     bool private _isAllowanceApproved = false;
+
+    // events
+
+    event Bought(address indexed account, uint256 amount);
+    event Claimed(address indexed account, uint256 amount);
 
     constructor(address owner_, address tokenAddress_) Ownable() {
         _token = ArchiMat(tokenAddress_);
@@ -65,6 +72,7 @@ contract ICO is Ownable {
         require(_tokenBalances[msg.sender] > 0, "ICO : You have no token to claim.");
         uint256 amount = _tokenBalances[msg.sender];
         _tokenBalances[msg.sender] = 0;
+        emit Claimed(msg.sender, amount);
         _token.transfer(msg.sender, amount);
     }
 
@@ -79,17 +87,19 @@ contract ICO is Ownable {
     /**
      * @notice private function to buy tokens
      */
-    function _buyTokens(address sender, uint256 amount) private icoRunning {
-        require(_isAllowanceApproved == true, "ICO : owner (of token) need to approve ICO as a spender");
+    function _buyTokens(address sender, uint256 weiAmount_) private icoRunning {
+        require(checkAllowance() == true, "ICO : owner (of token) need to approve ICO as a spender");
         require(supply() > 0, "ICO : All the tokens have been sold.");
-        uint256 tokenAmount = amount / EXCHRATE; // 1 token <=> 1000 wei
+        uint256 tokenAmount = weiAmount_ / EXCHRATE; // 1 token <=> 10 ** 9 wei
 
         uint256 diff;
         if (supply() < tokenAmount) {
             diff = tokenAmount - supply();
         }
-        _supply -= tokenAmount - diff;
-        _tokenBalances[sender] += tokenAmount - diff;
+        uint256 realTokenPurchase = tokenAmount - diff;
+        _supply -= realTokenPurchase;
+        _tokenBalances[sender] += realTokenPurchase;
+        emit Bought(msg.sender, realTokenPurchase);
         _token.transferFrom(owner(), address(this), tokenAmount);
         payable(sender).sendValue(diff * EXCHRATE);
     }
