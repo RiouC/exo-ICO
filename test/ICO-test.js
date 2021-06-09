@@ -86,8 +86,10 @@ describe('ICO', function () {
   });
 
   describe('ICO is over', function () {
+    let ownerERC20Balance;
     beforeEach(async function () {
       await archimat.connect(owner).approve(ico.address, INIT_SUPPLY);
+      ownerERC20Balance = await archimat.balanceOf(owner.address);
       await ico.connect(alice).buyTokens({ value: 5 * EXCHRATE });
 
       let block = await ethers.provider.getBlock();
@@ -106,9 +108,14 @@ describe('ICO', function () {
     it(`Should increase balance of buyer in ERC20 balance`, async function () {
       expect(await archimat.balanceOf(alice.address)).to.equal(5);
     });
-    it(`Should decrease balance of ico in ERC20 balance`, async function () {
-      expect(await archimat.balanceOf(ico.address)).to.equal(0);
+    it(`Should decrease balance of owner in ERC20 balance`, async function () {
+      expect(await archimat.balanceOf(owner.address)).to.equal(ownerERC20Balance.sub(5));
     });
+    // it('Should emit a Transfer event from ERC20', async function () {
+    //   await expect(await ico.connect(alice).claimTokens())
+    //     .to.emit(archimat, 'Transfer')
+    //     .withArgs(ico.address, aiice.address, 5);
+    // });
   });
 
   describe('Withdraw ICO profits', function () {});
